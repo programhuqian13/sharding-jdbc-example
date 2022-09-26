@@ -1,0 +1,53 @@
+mybatis-plus:
+  mapper-locations: classpath:/mappers/**.xml
+server:
+  port: 8080
+spring:
+  application:
+    name: sharding-jdbc-example-quick-start
+  shardingsphere:
+    datasource:
+      names: example
+      example:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3306/ds1
+        password: Huqian@1314
+        type: com.zaxxer.hikari.HikariDataSource
+        username: root
+    rules:
+      sharding:
+        binding-tables:
+          - t_user_info
+#        default-database-strategy:
+#          standard:
+#            sharding-algorithm-name: database-inline
+#            sharding-column: id
+        key-generators:
+          snowflake:
+            type: SNOWFLAKE
+        sharding-algorithms:
+          auto-mod:
+            type: mod
+            props:
+              sharding-count: 4
+#          database-inline:
+#            props:
+#              algorithm-expression: ds$->{id % 2}
+#            type: INLINE
+          t-user-info-inline:
+            props:
+              algorithm-expression: t_user_info_$->{id % 2}
+            type: INLINE
+        tables:
+          t_user_info:
+            actual-data-nodes: example.t_user_info_$->{0..1}
+            key-generate-strategy:
+              column: id
+              key-generator-name: snowflake
+            table-strategy:
+              standard:
+                sharding-algorithm-name: t-user-info-inline
+                sharding-column: id
+    props:
+      # ???????SQL
+      sql-show: true
