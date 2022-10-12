@@ -1,0 +1,41 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: sharding-jdbc-example-cus-enc
+  shardingsphere:
+    props:
+      query-with-cipher-column: true
+      sql-show: true
+    datasource:
+      names: example
+      example:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3306/ds-cus-enc
+        password: Huqian@1314
+        type: com.zaxxer.hikari.HikariDataSource
+        username: root
+    rules:
+      encrypt:
+        encryptors:
+          encrypt_sha256:
+            type: SHA256
+          telephone_encrypt:
+            type: AES
+            props:
+              aes-key-value: telephone_norce
+          password_encrypt:
+            type: MD5
+        tables:
+          t_user_info:
+            columns:
+              telephone:
+                cipher-column: telephone
+                encryptor-name: encrypt_sha256_norce
+                assistedQueryColumn: assisted_query
+              password:
+                cipher-column: password
+                encryptor-name: password_encrypt
+              address:
+                cipher-column: address
+                encryptor-name: encrypt_sha256

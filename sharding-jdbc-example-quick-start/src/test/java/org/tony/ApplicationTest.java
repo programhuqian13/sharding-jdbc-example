@@ -1,6 +1,8 @@
 package org.tony;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +37,21 @@ public class ApplicationTest {
     public void testSelect(){
         List<UserInfo> list = userInfoService.list(new QueryWrapper<UserInfo>().lambda().eq(UserInfo::getId,1L));
         System.out.println(list);
+    }
+
+    @Test
+    public void testSelectIn(){
+        List<UserInfo> list = userInfoService.list(new QueryWrapper<UserInfo>().lambda().in(UserInfo::getId,1L,2L));
+        System.out.println(list);
+    }
+
+    @Test
+    public void testSelectPage(){
+        // 模拟复杂分页查询
+        IPage<UserInfo> userEntityIPage = userInfoService.page(new Page<>(1,4));
+        System.out.println("总页数： " + userEntityIPage.getPages());
+        System.out.println("总记录数： " + userEntityIPage.getTotal());
+        userEntityIPage.getRecords().forEach(System.out::println);
     }
 
     @Test

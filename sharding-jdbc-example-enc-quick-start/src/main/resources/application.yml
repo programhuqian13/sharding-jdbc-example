@@ -1,0 +1,42 @@
+mybatis-plus:
+  mapper-locations: classpath:/mappers/**.xml
+server:
+  port: 8080
+spring:
+  shardingsphere:
+    datasource:
+      names: example
+      example:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3306/ds-enc
+        password: Huqian@1314
+        type: com.zaxxer.hikari.HikariDataSource
+        username: root
+    rules:
+      encrypt:
+        tables:
+          t_user_info:
+            columns:
+              email:
+                cipher-column: email
+                encryptor-name: email-encryptor
+              password:
+                cipher-column: password
+                encryptor-name: password-encryptor
+              tel:
+                cipher-column: tel
+                encryptor-name: tel-encryptor
+        encryptors:
+          email-encryptor:
+            type: AES
+            props:
+              aes-key-value: emailsign
+          password-encryptor:
+            type: MD5
+          tel-encryptor:
+            type: AES
+            props:
+              aes-key-value: telsign
+    props:
+      query-with-cipher-column: true
+      sql-show: true

@@ -6,25 +6,27 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 /**
- * 实体
  * @author Tony
  */
-@TableName(value="t_user_info")
-public class UserInfo{
+@TableName("t_user_info")
+public class UserInfo {
 
     @TableId(value = "id",type = IdType.ASSIGN_ID)
     private Long id;
 
-    @TableField(value = "username")
+    @TableField("username")
     private String username;
 
-    @TableField(value = "password")
+    @TableField("password")
     private String password;
 
-    @TableField(value = "email")
+    @TableField("tel")
+    private String tel;
+
+    @TableField("email")
     private String email;
 
-    @TableField(value = "address")
+    @TableField("address")
     private String address;
 
     public Long getId() {
@@ -51,6 +53,14 @@ public class UserInfo{
         this.password = password;
     }
 
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -73,6 +83,7 @@ public class UserInfo{
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", tel='" + tel + '\'' +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 '}';
